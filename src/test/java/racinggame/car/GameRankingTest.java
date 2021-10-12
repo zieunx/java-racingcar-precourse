@@ -24,7 +24,6 @@ public class GameRankingTest {
 		List<Car> playCars = carGroup.play(4);
 		System.out.println("playCars = " + playCars);
 		GameRanking gameRanking = new GameRanking(playCars);
-		List<String> winnerNames = gameRanking.getWinnerNames();
-		System.out.println(winnerNames);
+		System.out.println(gameRanking.getWinnerNames());
 	}
 }

@@ -9,14 +9,18 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class GameRanking {
-	Map<Integer, List<String>> ranking;
+	Map<Integer, List<CarName>> ranking;
 
 	public GameRanking(List<Car> cars) {
 		mappingCars(cars);
 	}
 
-	public List<String> getWinnerNames() {
-		return ranking.get(Collections.max(ranking.keySet()));
+	public String getWinnerNames() {
+		StringBuilder winnersBuilder = new StringBuilder();
+		for (CarName carName : ranking.get(Collections.max(ranking.keySet()))) {
+			winnersBuilder.append(carName.getName()).append(",");
+		}
+		return winnersBuilder.substring(0, winnersBuilder.length() - 1);
 	}
 
 	private void mappingCars(List<Car> cars) {

@@ -19,9 +19,19 @@ public class CarGroup {
 		return cars;
 	}
 
-	private void moveCars() {
+	public List<Car> getCars() {
+		return cars;
+	}
+
+	public void moveCars() {
 		for (Car car : cars) {
 			car.move(Randoms.pickNumberInRange(0, 9));
+		}
+	}
+
+	public void print() {
+		for (Car car : cars) {
+			car.print();
 		}
 	}
 }
