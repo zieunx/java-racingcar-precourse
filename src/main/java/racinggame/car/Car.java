@@ -6,25 +6,25 @@ public class Car {
 	private final String PRINT_DISTANCE = "-";
 	private final int MOVING_FORWARD = 4;
 	private final CarName name;
-	private int distance;
+	private final Distance distance;
 
 	public Car(String name) {
 		this.name = new CarName(name);
-		this.distance = 0;
+		this.distance = new Distance();
 	}
 
-	public int move(int randomNo) {
-		if (randomNo >= MOVING_FORWARD) {
-			distance++;
+	public Distance move(int randomNo) {
+		if (isForward(randomNo)) {
+			distance.forward();
 		}
 		return distance;
 	}
 
 	public boolean isMoreThanOrEquals(Car car) {
-		return this.distance >= car.getDistance();
+		return distance.isMoreThanOrEquals(car.getDistance());
 	}
 
-	public int getDistance() {
+	public Distance getDistance() {
 		return distance;
 	}
 
@@ -33,7 +33,7 @@ public class Car {
 	}
 
 	public void print() {
-		System.out.println(name.getName() + " : " + String.join("", Collections.nCopies(distance, PRINT_DISTANCE)));
+		System.out.println(name.getName() + " : " + String.join("", Collections.nCopies(distance.getDistance(), PRINT_DISTANCE)));
 	}
 
 	private boolean isForward(int randomNo) {
