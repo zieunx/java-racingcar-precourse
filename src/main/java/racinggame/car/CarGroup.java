@@ -12,13 +12,6 @@ public class CarGroup {
 		this.cars = cars;
 	}
 
-	public List<Car> play(int tryCount) {
-		for (int i = 0; i < tryCount; i++) {
-			moveCars();
-		}
-		return cars;
-	}
-
 	public List<Car> getCars() {
 		return cars;
 	}
