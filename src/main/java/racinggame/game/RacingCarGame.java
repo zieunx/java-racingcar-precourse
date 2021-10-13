@@ -7,40 +7,36 @@ import java.util.List;
 import nextstep.utils.Console;
 import racinggame.car.Car;
 import racinggame.car.CarGroup;
-import racinggame.car.GameRanking;
 import racinggame.message.ErrorMessages;
 import racinggame.message.Messages;
 
 public class RacingCarGame {
 
 	public void run() {
-		List<Car> cars = getCars();
-		int tryCount = getTryCount();
+		CarGroup carGroup = new CarGroup(getCars());
+		GamePlayCount gamePlayCount = getPlayCount();
 
-		CarGroup carGroup = new CarGroup(cars);
-
-		GameRanking gameRanking = new GameRanking(play(carGroup, tryCount));
+		GameRanking gameRanking = new GameRanking(gamePlayCount.play(carGroup));
 
 		System.out.println("최종 우승자는 " + gameRanking.getWinnerNames() + " 입니다.");
 	}
 
-	public List<Car> play(CarGroup carGroup, int tryCount) {
-		System.out.println(Messages.PROCESSING_RESULT.getMessage());
-		for (int i = 0; i < tryCount; i++) {
-			carGroup.moveCars();
-			carGroup.print();
-			System.out.println();
-		}
-		return carGroup.getCars();
-	}
-
-	private int getTryCount() {
+	private GamePlayCount getPlayCount() {
 		while (true) {
 			try {
-				return Integer.parseInt(askTryCount());
+				int playCount = parsingStringToInteger(askPlayCount());
+				return new GamePlayCount(playCount);
 			} catch (IllegalArgumentException iae) {
 				System.out.println(iae.getMessage());
 			}
+		}
+	}
+
+	private int parsingStringToInteger(String input) {
+		try {
+			return Integer.parseInt(input);
+		} catch (IllegalArgumentException iae) {
+			throw new IllegalArgumentException(ErrorMessages.TRY_COUNT_PARSING_ERROR.getMessage());
 		}
 	}
 
@@ -56,14 +52,19 @@ public class RacingCarGame {
 	}
 
 	private List<Car> mappingCars(List<String> names) {
+		validateCarNames(names);
+
 		List<Car> cars = new ArrayList<>();
-		if (names.isEmpty()) {
-			System.out.println(ErrorMessages.VALIDATE_CAR_NAME_EMPTY_ERROR.getMessage());
-		}
 		for (String name : names) {
 			cars.add(new Car(name));
 		}
 		return cars;
+	}
+
+	private void validateCarNames(List<String> names) {
+		if (names.isEmpty()) {
+			throw new IllegalArgumentException(ErrorMessages.VALIDATE_CAR_NAME_EMPTY_ERROR.getMessage());
+		}
 	}
 
 	private String askCarNames() {
@@ -71,8 +72,8 @@ public class RacingCarGame {
 		return Console.readLine();
 	}
 
-	private String askTryCount() {
-		System.out.println(Messages.ASK_TRY_COUNT.getMessage());
+	private String askPlayCount() {
+		System.out.println(Messages.ASK_PLAY_COUNT.getMessage());
 		return Console.readLine();
 	}
 }
